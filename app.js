@@ -31,7 +31,7 @@ app.use(express.static("public")); // For serving static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Setup Multer for image uploads
-const upload = multer({ dest: "uploads/" });
+const upload = multer(storage);
 
 // Mock database for storing email templates
 const emailTemplate = {};
