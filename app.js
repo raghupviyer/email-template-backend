@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const fs = require('fs')
+const cors = require('cors')
 const app = express();
 const path = require("path");
 const PORT = 3000;
@@ -29,6 +30,7 @@ app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form submissions
 app.use(express.static("public")); // For serving static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors())
 
 // Setup Multer for image uploads
 const upload = multer(storage);
