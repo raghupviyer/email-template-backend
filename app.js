@@ -16,6 +16,7 @@ const PORT = 3000;
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form submissions
 app.use(express.static("public")); // For serving static files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Setup Multer for image uploads
 const upload = multer({ dest: "uploads/" });
@@ -192,5 +193,5 @@ app.get("/download-section", (req, res) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
