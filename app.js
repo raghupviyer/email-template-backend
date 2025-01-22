@@ -36,16 +36,16 @@ app.get("/getEmailLayout", (req, res) => {
   });
 });
 
-app.post("/uploadEmailConfig", (req, res) => {
-  const emailConfig = req.body;
+app.post("/getEmailConfig", (req, res) => {
+  // const emailConfig = req.body;
 
-  if (!emailConfig || typeof emailConfig !== "object") {
-    return res.status(400).send("Invalid email template configuration.");
-  }
+  // if (!emailConfig || typeof emailConfig !== "object") {
+  //   return res.status(400).send("Invalid email template configuration.");
+  // }
 
   // emailTemplates.push(emailConfig);
-  emailTemplate = emailConfig
-  res.status(200).send({ message: "Email template configuration stored successfully." });
+  // emailTemplate = emailConfig
+  res.status(200).send(emailTemplate);
 });
 
 // Route 2: Upload image assets
