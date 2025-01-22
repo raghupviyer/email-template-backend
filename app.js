@@ -4,7 +4,7 @@ const fs = require('fs')
 const cors = require('cors')
 const app = express();
 const path = require("path");
-const PORT = 3000;
+const PORT = 3080;
 
 
 // const { createClient } = require("@supabase/supabase-js");
@@ -14,23 +14,20 @@ const PORT = 3000;
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads"); // Save files to the "uploads" directory
+    cb(null, 'uploads/'); // Destination folder for uploaded files
   },
   filename: (req, file, cb) => {
-    // Use the original file name with its extension
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const fileExtension = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + fileExtension);
+    cb(null,Date.now() + '-' + file.originalname); // Rename the file to include the timestamp
   },
 });
 
 
 // Middleware
+app.use(cors())
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form submissions
 app.use(express.static("public")); // For serving static files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(cors())
 
 // Setup Multer for image uploads
 const upload = multer(storage);
