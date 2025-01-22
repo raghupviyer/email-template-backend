@@ -23,7 +23,11 @@ const storage = multer.diskStorage({
 
 
 // Middleware
-app.use(cors())
+app.use(cors({
+  origin: '*', // React app's URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
+  credentials: true // Allow cookies and other credentials
+}))
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form submissions
 app.use(express.static("public")); // For serving static files
@@ -48,7 +52,7 @@ app.get("/getEmailLayout", (req, res) => {
   });
 });
 
-app.post("/getEmailConfig", (req, res) => {
+app.get("/getEmailConfig", (req, res) => {
   // const emailConfig = req.body;
 
   // if (!emailConfig || typeof emailConfig !== "object") {
