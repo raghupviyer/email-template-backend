@@ -62,23 +62,24 @@ app.post("/getEmailConfig", (req, res) => {
 });
 
 // Route 2: Upload image assets
-app.post("/uploadImage", upload.single("image"), (req, res) => {
-  const file = req.file;
+app.post("/uploadImages", upload.array("image"), (req, res) => {
+  const files = req.files;
 
-  if (!file) {
-    return res.status(400).send("No file uploaded.");
+  if (!files || files.length === 0) {
+    return res.status(400).send("No files uploaded.");
   }
 
-  console.log()
-
-  // Construct the URL for the uploaded file
-  const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
+  // Construct the URLs for the uploaded files
+  const fileUrls = files.map((file) => 
+    `${req.protocol}://${req.get("host")}/uploads/${file.filename}`
+  );
 
   res.status(200).send({
-    message: "Image uploaded successfully.",
-    fileUrl: fileUrl,
+    message: "Images uploaded successfully.",
+    fileUrls: fileUrls,
   });
 });
+
 
 // 2.5: Delete an image
 app.delete("/deleteImage/:filename", (req, res) => {
