@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const fs = require('fs')
 const app = express();
 const path = require("path");
 const PORT = 3000;
@@ -37,12 +38,46 @@ app.post("/uploadImage", upload.single("image"), (req, res) => {
     return res.status(400).send("No file uploaded.");
   }
 
+  console.log()
+
   // Construct the URL for the uploaded file
   const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${file.filename}`;
 
   res.status(200).send({
     message: "Image uploaded successfully.",
     fileUrl: fileUrl,
+  });
+});
+
+// 2.5: Delete an image
+app.delete("/deleteImage/:filename", (req, res) => {
+  const filename = req.params.filename;
+
+  if (!filename) {
+    return res.status(400).send("Filename is required.");
+  }
+
+  // Construct the full file path
+  const filePath = path.join(__dirname, "uploads", filename);
+
+  // Check if the file exists
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).send("File not found.");
+    }
+
+    // Delete the file
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error("Error deleting file:", err);
+        return res.status(500).send("Failed to delete the file.");
+      }
+
+      res.status(200).send({
+        message: "File deleted successfully.",
+        filename: filename,
+      });
+    });
   });
 });
 
