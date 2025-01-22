@@ -11,6 +11,18 @@ const PORT = 3000;
 // const SUPABASE_KEY = "your-service-role-key"; // Replace with your service role API key
 // const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads"); // Save files to the "uploads" directory
+  },
+  filename: (req, file, cb) => {
+    // Use the original file name with its extension
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const fileExtension = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + uniqueSuffix + fileExtension);
+  },
+});
+
 
 // Middleware
 app.use(express.json()); // To parse JSON bodies
