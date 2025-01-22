@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@supabase/supabase-js": "^2.48.0",
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.1"
   }

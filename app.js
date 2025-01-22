@@ -6,6 +6,12 @@ const path = require("path");
 const PORT = 3000;
 
 
+// const { createClient } = require("@supabase/supabase-js");
+// const SUPABASE_URL = "https://your-project.supabase.co"; // Replace with your Supabase project URL
+// const SUPABASE_KEY = "your-service-role-key"; // Replace with your service role API key
+// const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
 // Middleware
 app.use(express.json()); // To parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // For form submissions
@@ -15,7 +21,7 @@ app.use(express.static("public")); // For serving static files
 const upload = multer({ dest: "uploads/" });
 
 // Mock database for storing email templates
-const emailTemplates = [];
+const emailTemplate = {};
 
 // Route 1: Get layout.html file
 app.get("/getEmailLayout", (req, res) => {
@@ -28,6 +34,18 @@ app.get("/getEmailLayout", (req, res) => {
     }
     res.type("html").send(data);
   });
+});
+
+app.post("/uploadEmailConfig", (req, res) => {
+  const emailConfig = req.body;
+
+  if (!emailConfig || typeof emailConfig !== "object") {
+    return res.status(400).send("Invalid email template configuration.");
+  }
+
+  // emailTemplates.push(emailConfig);
+  emailTemplate = emailConfig
+  res.status(200).send({ message: "Email template configuration stored successfully." });
 });
 
 // Route 2: Upload image assets
@@ -89,7 +107,8 @@ app.post("/uploadEmailConfig", (req, res) => {
     return res.status(400).send("Invalid email template configuration.");
   }
 
-  emailTemplates.push(emailConfig);
+  // emailTemplates.push(emailConfig);
+  emailTemplate = emailConfig
   res.status(200).send({ message: "Email template configuration stored successfully." });
 });
 
@@ -101,7 +120,9 @@ app.post("/renderAndDownloadTemplate", (req, res) => {
     return res.status(400).send("Invalid request. Provide templateId and values.");
   }
 
-  const selectedTemplate = emailTemplates.find((tpl) => tpl.id === templateId);
+  // const selectedTemplate = emailTemplates.find((tpl) => tpl.id === templateId);
+  const selectedTemplate = emailTemplate
+
   if (!selectedTemplate) {
     return res.status(404).send("Template not found.");
   }
